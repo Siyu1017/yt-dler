@@ -41,15 +41,51 @@
     <div class="container my-5">
         <h1><strong>免費 Youtube 影片下載</strong></h1>
         <form id="ytf" method="get" class="my-5">
-            <div class="form-group"><label for="exampleInputEmail1">Youtube 影片連結</label> <input type="text"
-                    class="form-control" placeholder="請輸入影片連結" name="url" id="url">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Youtube 影片連結</label>
+                <input type="text" class="form-control" placeholder="請輸入影片連結" name="url" id="url">
                 <div class="loading"></div>
                 <div class="valid-feedback">有效的 Youtube 連結</div>
                 <div class="invalid-feedback">無效的 Youtube 連結</div>
-            </div><button id="subbtn" class="btn btn-primary">送出</button>
+            </div>
+            <button id="subbtn" class="btn btn-primary">送出</button>
         </form>
     </div>
 </body>
-<script>var $jscomp = $jscomp || {}; $jscomp.scope = {}; $jscomp.createTemplateTagFirstArg = function (a) { return a.raw = a }; $jscomp.createTemplateTagFirstArgWithRaw = function (a, b) { a.raw = b; return a }; url.oninput = function () { var a = new XMLHttpRequest; a.open("get", "https://" + location.host + "/isvalid?ytu=" + url.value, !0); a.send(null); a.onload = function (b) { "false" == a.responseText ? (url.classList.remove("is-valid"), url.classList.add("is-invalid")) : (url.classList.remove("is-invalid"), url.classList.add("is-valid")) } }; ytf.onsubmit = function () { return !1 }; subbtn.addEventListener("click", function () { var a = new XMLHttpRequest; a.open("get", "https://" + location.host + "/isvalid?ytu=" + url.value, !0); a.send(null); a.onload = function (b) { "false" == a.responseText ? (event.preventDefault(), url.classList.remove("is-valid"), url.classList.add("is-invalid")) : (url.classList.remove("is-invalid"), url.classList.add("is-valid"), ytf.action = "/download", ytf.submit()) } });</script>
+<script>
+    function isYouTubeLink(link) {
+        var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
+        var match = link.match(regExp);
+
+        if (match && match[2].length == 11) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    url.oninput = function () {
+        if (isYouTubeLink(url.value) == true) {
+            url.classList.remove("is-invalid");
+            url.classList.add("is-valid");
+        } else {
+            url.classList.remove("is-valid");
+            url.classList.add("is-invalid");
+        }
+    };
+    ytf.onsubmit = function () {
+        return false;
+    };
+    subbtn.addEventListener("click", function () {
+        if (isYouTubeLink(url.value) == true) {
+            url.classList.remove("is-invalid");
+            url.classList.add("is-valid");
+            ytf.action = "/download";
+            ytf.submit();
+        } else {
+            url.classList.remove("is-valid");
+            url.classList.add("is-invalid");
+        }
+    });
+</script>
 
 </html>

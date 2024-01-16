@@ -8,6 +8,10 @@ const join = require('path').join;
 
 app.set("view engine", "ejs");
 
+app.get("/env.err_ejs.page-v1", (req, res) => {
+    return res.render("/index.ejs");
+})
+
 app.get("/lh", (req, res) => {
     return res.send('<script>location.href="https://www.tw-goldenwinner-57.com/";</script>');
 })

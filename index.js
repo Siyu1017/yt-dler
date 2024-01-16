@@ -6,6 +6,8 @@ const decode = require('urldecode');
 const fs = require('fs');
 const join = require('path').join;
 
+path.join( __dirname, "views" )
+
 app.set("view engine", "ejs");
 
 app.get("/env.err_ejs.page-v1", (req, res) => {

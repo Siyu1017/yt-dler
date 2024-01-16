@@ -51,12 +51,21 @@ app.get("/download", async (req, res) => {
     console.log(info.formats[4]);
     console.log(info.formats[1]);
 
+    return res.json({
+        url: "https://www.youtube.com/embed/" + v_id,
+        info: info.formats.sort((a, b) => {
+            return a.mimeType < b.mimeType;
+        }),
+    })
+
+    /*
     return res.render("download", {
         url: "https://www.youtube.com/embed/" + v_id,
         info: info.formats.sort((a, b) => {
             return a.mimeType < b.mimeType;
         }),
     });
+    */
 });
 
 app.get("/favicon.ico", (req, res) => {

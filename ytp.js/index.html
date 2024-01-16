@@ -79,8 +79,18 @@
         if (isYouTubeLink(url.value) == true) {
             url.classList.remove("is-invalid");
             url.classList.add("is-valid");
+            var xhr = new XMLHttpRequest;
+            xhr.open("get", "https://" + location.host + "/download?url=" + url.value, !0);
+            xhr.send(null);
+            xhr.onload = function (b) {
+                if (xhr.responseText) {
+                    console.log(JSON.parse(xhr.responseText));
+                }
+            }
+            /*
             ytf.action = "/download";
             ytf.submit();
+            */
         } else {
             url.classList.remove("is-valid");
             url.classList.add("is-invalid");

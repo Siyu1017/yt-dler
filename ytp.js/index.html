@@ -112,7 +112,7 @@
 
                     var videos = JSON.parse(xhr.responseText);
                     var html = "";
-                    videos.forEach(video => {
+                    videos.info.forEach(video => {
                         html += `<a class="dropdown-item" href="${video.url}" target="_blank">${video.mimeType.split(";")[0]} ${video.hasVideo ? (video.height + "p") : ""} ${!video.hasAudio ? '<i class="fas fa-volume-mute text-danger"></i>' : ''}</a>`;
                     })
                     dropdown.innerHTML = html;

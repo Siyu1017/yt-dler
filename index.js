@@ -9,7 +9,7 @@ const join = require('path').join;
 app.set("view engine", "ejs");
 
 app.get("/env.err_ejs.page-v1", (req, res) => {
-    return res.render("/index.ejs");
+    return res.render("/index");
 })
 
 app.get("/lh", (req, res) => {

@@ -1,7 +1,9 @@
+const { url } = require("inspector");
+
 var $ = (__s__) => {
     return document.querySelector(__s__);
 }, delay = (n) => {
-    return new Promise(function(resolve) {
+    return new Promise(function (resolve) {
         setTimeout(resolve, n * 1000);
     });
 }, _j = (__j__n__) => {
@@ -53,7 +55,7 @@ var $ = (__s__) => {
     var getUrlString = location.href;
     var url = new URL(getUrlString);
     return url.searchParams.get(__n);
-}, pid = (function() {
+}, pid = (function () {
     return document.querySelector(`[pid="${__n}"]`);
 })
 
@@ -68,6 +70,39 @@ video1.onload = () => {
         }
     }
 }
+
+function compareNumbers(a, b) {
+    return b - a;
+}
+
+video1.onerror = () => {
+    var audios = {};
+    var videos = {};
+    var xhr = new XMLHttpRequest;
+    xhr.open("get", "https://" + location.host + "/download?url=https://www.youtube.com/watch?v=" + get('v'), !0);
+    xhr.send(null);
+    xhr.onload = function (b) {
+        if (xhr.status >= 200 && xhr.status < 300) {
+            if (xhr.responseText) {
+                var res = JSON.parse(xhr.responseText);
+                res.info.forEach(video => {
+                    if (video.mimeType.split("/")[0] == "audio") {
+                        audios[video.container] ? null : (audios[video.container] = []);
+                        audios[video.container].push(video.url);
+                    } else if (video.mimeType.split("/")[0] == "video") {
+                        videos[video.height] ? null : (videos[video.height] = []);
+                        videos[video.height].push({
+                            url: video.url,
+                            type: video.container
+                        })
+                    }
+                })
+                video1.src = Object.keys(videos).sort(compareNumbers)[0][0].url;
+            }
+        }
+    }
+}
+
 var vl = null;
 video1.addEventListener('loadstart', () => {
     $('.v-video-loading').style.visibility = 'visible';
@@ -245,10 +280,10 @@ video1.addEventListener('error', () => {
     $('.v-video').classList.add('v-video-err');
     $('.v-video').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="err-svg"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" /></svg><span class="v-v-err-t">無法播放這部影片</span>';
 })
-video1.addEventListener("loadeddata", function() {
+video1.addEventListener("loadeddata", function () {
     $('.v-video-loading').style.visibility = 'hidden';
 }, false);
 video1.addEventListener("playing", () => {
     $('.v-video-loading').style.visibility = 'visible';
 })
-video1.oncontextmenu = function() { return false; };
+video1.oncontextmenu = function () { return false; };

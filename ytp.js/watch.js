@@ -1,5 +1,3 @@
-const { url } = require("inspector");
-
 var $ = (__s__) => {
     return document.querySelector(__s__);
 }, delay = (n) => {

@@ -83,7 +83,7 @@ video1.onerror = () => {
     var audios = {};
     var videos = {};
     var xhr = new XMLHttpRequest;
-    xhr.open("get", "https://" + location.host + "/download?url=https://www.youtube.com/watch?v=" + get('v'), !0);
+    xhr.open("get", "https://" + location.host + "/api?url=https://www.youtube.com/watch?v=" + get('v'), !0);
     xhr.send(null);
     xhr.onload = function (b) {
         if (xhr.status >= 200 && xhr.status < 300) {

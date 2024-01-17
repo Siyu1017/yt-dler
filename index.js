@@ -20,8 +20,8 @@ app.get("/ip", async (req, res) => {
     return
 })
 
-app.get("/download", async (req, res) => {
-    if (youtubeUrl.valid(decode(req.url.split('/download?url=')[1])) != true) {
+app.get("/api", async (req, res) => {
+    if (youtubeUrl.valid(req.query.url) != true) {
         res.send('Invalid URL');
         return;
     }

@@ -47,6 +47,38 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"
+        integrity="sha512-bUg5gaqBVaXIJNuebamJ6uex//mjxPk8kljQTdM1SwkNrQD7pjS+PerntUSD+QRWPNJ0tq54/x4zRV8bLrLhZg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        #nprogress {
+            pointer-events: none;
+            --nprogress: #007bff;
+        }
+
+        #nprogress .bar {
+            background: var(--nprogress);
+            position: fixed;
+            z-index: 9999999999999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+        }
+
+        #nprogress .peg {
+            display: block;
+            position: absolute;
+            right: 0px;
+            width: 100px;
+            height: 100%;
+            box-shadow: 0 0 10px var(--nprogress), 0 0 5px var(--nprogress);
+            opacity: 1.0;
+            -webkit-transform: rotate(3deg) translate(0px, -4px);
+            -ms-transform: rotate(3deg) translate(0px, -4px);
+            transform: rotate(3deg) translate(0px, -4px);
+        }
+    </style>
     <link rel="stylesheet" href="./index.css">
 </head>
 
@@ -67,8 +99,8 @@
         </div>
         <div class="container my-5" style="text-align: center;" hidden id="video-card">
             <iframe class="d-flex"
-                style="width:480px;max-width:calc(100vw - 30px);height:300px;border:0;border-radius:10px;margin: 0 auto 2rem;"
-                src="" id="embed"></iframe>
+                style="width:480px;max-width:calc(100vw - 30px);height:300px;border:0;border-radius:10px" src=""
+                id="embed"></iframe>
             <div class="btn-group">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">影片連結</button>
@@ -102,6 +134,7 @@
     };
     subbtn.addEventListener("click", function () {
         if (isYouTubeLink(url.value) == true) {
+            NProgress.start();
             url.classList.remove("is-invalid");
             url.classList.add("is-valid");
             var xhr = new XMLHttpRequest;
@@ -109,7 +142,6 @@
             xhr.send(null);
             xhr.onload = function (b) {
                 if (xhr.responseText) {
-
                     var videos = JSON.parse(xhr.responseText);
                     var html = "";
                     videos.info.forEach(video => {
@@ -118,6 +150,7 @@
                     dropdown.innerHTML = html;
                     embed.src = videos.url;
                     document.getElementById("video-card").hidden = false;
+                    NProgress.done();
                 }
             }
             /*

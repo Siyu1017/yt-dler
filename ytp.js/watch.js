@@ -75,6 +75,12 @@ function compareNumbers(a, b) {
     return b - a;
 }
 
+function errorHandler() {
+    $('.v-video-loading').style.visibility = 'hidden';
+    $('.v-video').classList.add('v-video-err');
+    $('.v-video').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="err-svg"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" /></svg><span class="v-v-err-t">無法播放這部影片</span>';
+}
+
 video1.onerror = () => {
     var audios = {};
     var videos = {};
@@ -98,8 +104,15 @@ video1.onerror = () => {
                     }
                 })
                 video1.src = Object.keys(videos).sort(compareNumbers)[0][0].url;
+            } else {
+                errorHandler()
             }
+        } else {
+            errorHandler()
         }
+    }
+    xhr.onerror = () => {
+        errorHandler();
     }
 }
 
@@ -275,11 +288,7 @@ function eventKeydown(e) {
     }
 }
 document.addEventListener('keydown', eventKeydown);
-video1.addEventListener('error', () => {
-    $('.v-video-loading').style.visibility = 'hidden';
-    $('.v-video').classList.add('v-video-err');
-    $('.v-video').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="err-svg"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" /></svg><span class="v-v-err-t">無法播放這部影片</span>';
-})
+
 video1.addEventListener("loadeddata", function () {
     $('.v-video-loading').style.visibility = 'hidden';
 }, false);

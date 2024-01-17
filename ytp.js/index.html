@@ -110,6 +110,9 @@
     </div>
 </body>
 <script>
+    var delay = (d) => {
+        return new Promise((r) => setTimeout(r, d));
+    };
     async function error(message, time) {
         var error = document.createElement("div");
         error.style = "pointer-events: none;transition: top .2s ease;position: fixed;top: -100vh;width: 100vw;display: flex;align-items: center;justify-content: center; z-index: 99999999";
@@ -135,6 +138,12 @@
             return false;
         }
     }
+    function errorHandler() {
+        url.classList.remove("is-valid");
+        url.classList.add("is-invalid");
+        error("這部影片可能已經遭到刪除或者不存在!");
+        NProgress.done();
+    }
     url.oninput = function () {
         if (isYouTubeLink(url.value) == true) {
             url.classList.remove("is-invalid");
@@ -157,22 +166,26 @@
             xhr.open("get", "https://" + location.host + "/download?url=" + url.value, !0);
             xhr.send(null);
             xhr.onload = function (b) {
-                if (xhr.responseText) {
-                    var videos = JSON.parse(xhr.responseText);
-                    var html = "";
-                    videos.info.forEach(video => {
-                        html += `<a class="dropdown-item" href="${video.url}" target="_blank">${video.mimeType.split(";")[0]} ${video.hasVideo ? (video.height + "p") : ""} ${!video.hasAudio ? '<i class="fas fa-volume-mute text-danger"></i>' : ''}</a>`;
-                    })
-                    dropdown.innerHTML = html;
-                    embed.src = videos.url;
-                    document.getElementById("video-card").hidden = false;
-                    NProgress.done();
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    if (xhr.responseText) {
+                        var videos = JSON.parse(xhr.responseText);
+                        var html = "";
+                        videos.info.forEach(video => {
+                            html += `<a class="dropdown-item" href="${video.url}" target="_blank">${video.mimeType.split(";")[0]} ${video.hasVideo ? (video.height + "p") : ""} ${!video.hasAudio ? '<i class="fas fa-volume-mute text-danger"></i>' : ''}</a>`;
+                        })
+                        dropdown.innerHTML = html;
+                        embed.src = videos.url;
+                        document.getElementById("video-card").hidden = false;
+                        NProgress.done();
+                    } else {
+                        errorHandler();
+                    }
+                } else {
+                    errorHandler();
                 }
             }
             xhr.onerror = function (err) {
-                url.classList.remove("is-valid");
-                url.classList.add("is-invalid");
-                error("這部影片可能已經遭到刪除或著不存在!");
+                errorHandler();
             }
             /*
             ytf.action = "/download";

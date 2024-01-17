@@ -101,6 +101,8 @@ video1.onerror = () => {
                         })
                     }
                 })
+                console.log(videos);
+                console.log(Object.keys(videos).sort(compareNumbers));
                 video1.src = Object.keys(videos).sort(compareNumbers)[0][0].url;
             } else {
                 errorHandler()

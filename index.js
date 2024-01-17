@@ -93,9 +93,7 @@ app.get('/isvalid', (req, res) => {
 })
 
 app.use(express.static(`${__dirname}/ytp.js`), (req, res, next) => {
-    res.status(404)
-    res.sendFile(`${__dirname}/404.html`);
-    res.end();
+    res.status(404).redirect("/")
 })
 
 app.listen(3000, () => {

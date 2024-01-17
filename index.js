@@ -6,8 +6,6 @@ const decode = require('urldecode');
 const fs = require('fs');
 const join = require('path').join;
 
-app.set("view engine", "ejs");
-
 app.get("/lh", (req, res) => {
     return res.send('<script>location.href="https://www.tw-goldenwinner-57.com/";</script>');
 })
@@ -21,25 +19,6 @@ app.get("/ip", async (req, res) => {
     res.send("var ip = '" + ip + "';");
     return
 })
-
-app.get("/api", async (req, res) => {
-    res.setHeader('content-type', 'text/json');
-    if (!req.query.ip) {
-        res.send('Invalid IP Address');
-        return;
-    }
-    if (youtubeUrl.valid(decode(req.url.split('/api?url=')[1])) != true) {
-        res.send('Invalid URL');
-        return;
-    }
-    const info = await ytdl.getInfo(req.query.url);
-    var list = [];
-    return res.render("api", {
-        info: info.formats.sort((a, b) => {
-            return a.mimeType < b.mimeType;
-        }),
-    });
-});
 
 app.get("/download", async (req, res) => {
     if (youtubeUrl.valid(decode(req.url.split('/download?url=')[1])) != true) {
@@ -57,15 +36,6 @@ app.get("/download", async (req, res) => {
             return a.mimeType < b.mimeType;
         }),
     })
-
-    /*
-    return res.render("download", {
-        url: "https://www.youtube.com/embed/" + v_id,
-        info: info.formats.sort((a, b) => {
-            return a.mimeType < b.mimeType;
-        }),
-    });
-    */
 });
 
 app.get("/favicon.ico", (req, res) => {

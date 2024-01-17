@@ -134,6 +134,7 @@
     };
     subbtn.addEventListener("click", function () {
         if (isYouTubeLink(url.value) == true) {
+            NProgress.done();
             NProgress.start();
             url.classList.remove("is-invalid");
             url.classList.add("is-valid");

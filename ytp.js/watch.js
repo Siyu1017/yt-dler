@@ -89,6 +89,9 @@ video1.onerror = () => {
         if (xhr.status >= 200 && xhr.status < 300) {
             if (xhr.responseText) {
                 var res = JSON.parse(xhr.responseText);
+                if (res.status != "ok") {
+                    return errorHandler();
+                }
                 res.info.forEach(video => {
                     if (video.mimeType.split("/")[0] == "audio") {
                         audios[video.container] ? null : (audios[video.container] = []);

@@ -176,6 +176,7 @@
         if (isYouTubeLink(url.value) == true) {
             subbtn.innerHTML = `<div class="spinner" role="spinner"><div class="spinner-icon"></div></div>`;
             subbtn.classList.add("loading");
+            subbtn.blur();
             NProgress.done();
             NProgress.start();
             url.classList.remove("is-invalid");

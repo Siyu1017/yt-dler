@@ -55,7 +55,7 @@ img {
 *[data-tooltip]:after {
     content: attr(data-tooltip);
     background: rgba(0, 0, 0, 0.8);
-    padding: 2px 7px;
+    padding: 4px 9px;
     text-align: center;
     color: #fff;
     font-size: 12px;

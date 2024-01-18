@@ -88,7 +88,7 @@ app.get('/isvalid', (req, res) => {
     if (!req.query.url) {
         return res.json({
             status: "error",
-            message: "Query <url> is required.",
+            message: "Query String Parameter <url> is required.",
             isvalid: false
         })
     }

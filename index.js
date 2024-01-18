@@ -6,35 +6,37 @@ const decode = require('urldecode');
 const fs = require('fs');
 const join = require('path').join;
 
-app.get("/lh", (req, res) => {
-    return res.send('<script>location.href="https://www.tw-goldenwinner-57.com/";</script>');
-})
-
 app.get("/ip", async (req, res) => {
     res.setHeader('content-type', 'text/json');
     var ip = (req.headers["x-forwarded-for"] || "").split(",").pop() ||
-            req.connection.remoteAddress ||
-            req.socket.remoteAddress ||
-            req.connection.socket.remoteAddress;
-    res.send("var ip = '" + ip + "';");
-    return
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress;
+    res.json({ 
+        ip: ip 
+    });
+    return;
 })
 
 app.get("/api", async (req, res) => {
     if (youtubeUrl.valid(req.query.url) != true) {
-        res.send('Invalid URL');
-        return;
+        return res.json({
+            status: "error",
+            message: "Invalid Youtube URL.",
+            url: "",
+            info: ""
+        });
     }
     const v_id = req.query.url.split('v=')[1];
     const info = await ytdl.getInfo(req.query.url);
-    console.log(info.formats[4]);
-    console.log(info.formats[1]);
 
     return res.json({
+        status: "ok",
+        message: "",
         url: "https://www.youtube.com/embed/" + v_id,
         info: info.formats.sort((a, b) => {
             return a.mimeType < b.mimeType;
-        }),
+        })
     })
 });
 
@@ -47,7 +49,7 @@ app.get("/videos", (req, res) => {
     let jsonFiles = [];
     function findJsonFile(path) {
         let files = fs.readdirSync(path);
-        files.forEach(function(item, index) {
+        files.forEach(function (item, index) {
             let fPath = join(path, item);
             let stat = fs.statSync(fPath);
             if (stat.isDirectory() === true) {
@@ -83,13 +85,19 @@ app.get('/player', (req, res) => {
 })
 
 app.get('/isvalid', (req, res) => {
-    if (youtubeUrl.valid(req.url.split('/isvalid?ytu=')[1]) != true) {
-        res.send('false');
-        return;
-    } else {
-        res.send('true');
-        return;
+    if (!req.query.url) {
+        return res.json({
+            status: "error",
+            message: "Query <url> is required.",
+            isvalid: false
+        })
     }
+    res.json({
+        status: "ok",
+        message: "",
+        isvalid: youtubeUrl.valid(req.query.url)
+    })
+    return;
 })
 
 app.use(express.static(`${__dirname}/ytp.js`), (req, res, next) => {

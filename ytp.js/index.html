@@ -116,13 +116,15 @@
     </div>
 </body>
 <script>
-    url.value = localStorage.getItem("yt-dler.url") ? localStorage.getItem("yt-dler.url") : "";
-    if (isYouTubeLink(url.value) == true) {
-        url.classList.remove("is-invalid");
-        url.classList.add("is-valid");
-    } else {
-        url.classList.remove("is-valid");
-        url.classList.add("is-invalid");
+    if (localStorage.getItem("yt-dler.url")) {
+        url.value = localStorage.getItem("yt-dler.url");
+        if (isYouTubeLink(url.value) == true) {
+            url.classList.remove("is-invalid");
+            url.classList.add("is-valid");
+        } else {
+            url.classList.remove("is-valid");
+            url.classList.add("is-invalid");
+        }
     }
     var delay = (d) => {
         return new Promise((r) => setTimeout(r, d));
@@ -161,6 +163,7 @@
         subbtn.classList.remove("loading");
     }
     url.oninput = function () {
+        localStorage.setItem("yt-dler.url", url.value)
         if (isYouTubeLink(url.value) == true) {
             url.classList.remove("is-invalid");
             url.classList.add("is-valid");

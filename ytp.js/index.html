@@ -116,7 +116,6 @@
     </div>
 </body>
 <script>
-    // <div class="spinner" role="spinner"><div class="spinner-icon"></div></div>
     url.value = localStorage.getItem("yt-dler.url") ? localStorage.getItem("yt-dler.url") : "";
     if (isYouTubeLink(url.value) == true) {
         url.classList.remove("is-invalid");
@@ -158,6 +157,8 @@
         url.classList.add("is-invalid");
         error("這部影片可能已經遭到刪除或者不存在!");
         NProgress.done();
+        subbtn.innerHTML = `送出`;
+        subbtn.classList.remove("loading");
     }
     url.oninput = function () {
         if (isYouTubeLink(url.value) == true) {
@@ -170,6 +171,8 @@
     };
     ytf.onsubmit = function () {
         if (isYouTubeLink(url.value) == true) {
+            subbtn.innerHTML = `<div class="spinner" role="spinner"><div class="spinner-icon"></div></div>`;
+            subbtn.classList.add("loading");
             NProgress.done();
             NProgress.start();
             url.classList.remove("is-invalid");
@@ -189,6 +192,8 @@
                         embed.src = videos.url;
                         document.getElementById("video-card").hidden = false;
                         NProgress.done();
+                        subbtn.innerHTML = `送出`;
+                        subbtn.classList.remove("loading");
                     } else {
                         errorHandler();
                     }

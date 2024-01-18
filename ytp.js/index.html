@@ -116,6 +116,7 @@
     </div>
 </body>
 <script>
+    var sending = false;
     if (localStorage.getItem("yt-dler.url")) {
         url.value = localStorage.getItem("yt-dler.url");
         if (isYouTubeLink(url.value) == true) {
@@ -160,6 +161,7 @@
         error("這部影片可能已經遭到刪除或者不存在!");
         NProgress.done();
         subbtn.innerHTML = `送出`;
+        sending = false;
         subbtn.classList.remove("loading");
     }
     url.oninput = function () {
@@ -173,7 +175,9 @@
         }
     };
     ytf.onsubmit = function () {
+        if (sending == true) return false;
         if (isYouTubeLink(url.value) == true) {
+            sending = true;
             subbtn.innerHTML = `<div class="spinner" role="spinner"><div class="spinner-icon"></div></div>`;
             subbtn.classList.add("loading");
             subbtn.blur();
@@ -198,6 +202,7 @@
                         NProgress.done();
                         subbtn.innerHTML = `送出`;
                         subbtn.classList.remove("loading");
+                        sending = false;
                     } else {
                         errorHandler();
                     }

@@ -1,10 +1,15 @@
 const express = require("express");
 const app = express();
+const cors = require('cors');
 const ytdl = require("ytdl-core");
 const youtubeUrl = require('youtube-url');
 const decode = require('urldecode');
 const fs = require('fs');
 const join = require('path').join;
+
+app.use(cors({
+    origin: '*'
+}))
 
 app.get("/ip", async (req, res) => {
     res.setHeader('content-type', 'text/json');
